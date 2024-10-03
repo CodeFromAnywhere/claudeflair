@@ -55,9 +55,18 @@
                     class="bg-[#cc7c5e] hover:bg-[#b56e53] text-white font-bold py-2 px-4 rounded">
                     <i class="fas fa-key mr-2"></i>Set Password
                 </button>
+                <button id="setApiKeyBtn"
+                    class="bg-[#cc7c5e] hover:bg-[#b56e53] text-white font-bold py-2 px-4 rounded">
+                    <i class="fas fa-key mr-2"></i>Set API Key
+                </button>
             </div>
             <p class="mt-2 text-sm text-gray-600">No password yet? <a target="_blank"
                     href="https://donate.stripe.com/dR67vg95Zcmp2aedhD" class="text-blue-500 underline">Buy one here</a>
+
+            <p class="mt-2 text-sm text-gray-600">No API key yet? <a target="_blank"
+                    href="https://console.anthropic.com/settings/keys" class="text-blue-500 underline">Get one here</a>
+            </p>
+
             </p>
         </div>
 
@@ -395,7 +404,18 @@
             }
         });
 
+
         document.addEventListener('DOMContentLoaded', setupScrollBehavior);
+
+
+        document.getElementById('setApiKeyBtn').addEventListener('click', () => {
+            const apiKey = window.prompt("Please enter your Anthropic API key:");
+            if (apiKey) {
+                localStorage.setItem('anthropicApiKey', apiKey);
+                alert('API key set successfully!');
+            }
+        });
+
     </script>
 </body>
 
