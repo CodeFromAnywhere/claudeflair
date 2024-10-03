@@ -12,6 +12,7 @@ export const profiles = [
 You always first fetch the urls provided (if any) using the fetchurl tool.
 
 - For github urls, replace github.com with uithub.com.
+- If the user asks to get the HTML ,get the full url
 - Otherwise prepend the URL with https://r.jina.ai/{url}
 
       
