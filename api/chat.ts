@@ -11,7 +11,7 @@ export const OPTIONS = async (request: Request) => {
   return new Response(null, { headers });
 };
 export const config = {
-  runtime: "edge",
+  //runtime: "edge",
   regions: ["iad1"],
 };
 
@@ -49,6 +49,7 @@ export const POST = async (request: Request) => {
     "X-OPENAPI-SECRET": openapiSecret,
     Authorization: `Bearer ${process.env.ANTHROPIC_TOKEN}`,
   };
+
   console.dir({ chatCompletionUrl, headers, body }, { depth: 10 });
   // Forward the request to the chat completion endpoint
   const response = await fetch(chatCompletionUrl, {
@@ -77,8 +78,6 @@ export const POST = async (request: Request) => {
   if (!reader) {
     return new Response("No reader", { status: 500 });
   }
-
-  const encoder = new TextEncoder();
 
   console.log("START STREAM");
   const stream = new ReadableStream({
