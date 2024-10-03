@@ -23,3 +23,16 @@ And most importantly it can use 2 tools:
 
 - To fetch URLs: https://openapi-code-agent.vercel.app/openapi.json
 - To deploy generated HTML instantly: https://content.actionschema.com/openapi.json
+
+This project is made possible by:
+
+- https://chat.actionschema.com
+- https://anthropic.actionschema.com
+
+# TODO / Changelog:
+
+#buildinpublic thread: https://x.com/WKarsens/status/1841753924593668447
+
+1. It has a bug where it sometimes stops generating in the middle (likely due to nature of my streaming implementation or maybe due to output token length). Solution: add error handling and ensure to put as much as possible as system message, also after tools come back.
+
+2. I'll go bankrupt if I keep it free 🤑 solution: after 10 messages on your IP, link to stripe to submit payment details for automatic monthly payment of 1.25x of claude inference cost. If users don't want to pay, allow them to provide their own API key to bypass the ratelimit and only pay Claude directly.
