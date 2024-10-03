@@ -226,9 +226,7 @@
 
                 const password = localStorage.getItem('password') || '';
 
-                const headers = {
-                    'Content-Type': 'application/json',
-                }
+                const headers = { 'Content-Type': 'application/json' }
 
                 const key = localStorage.getItem("anthropicApiKey");
                 if (key) {
@@ -251,7 +249,6 @@
 
                 while (true) {
                     const { done, value } = await reader.read();
-                    if (done) break;
 
                     buffer += decoder.decode(value, { stream: true });
                     const lines = buffer.split("\n");
@@ -280,6 +277,9 @@
                             console.error("Error parsing chunk:", error);
                         }
                     }
+
+                    if (done) break;
+
                 }
 
                 document.getElementById('submitIcon').className = "fas fa-paper-plane mr-2";
