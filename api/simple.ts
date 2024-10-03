@@ -33,7 +33,7 @@ export const POST = async (request: Request) => {
     "X-OPENAPI-SECRET": openapiSecret,
     Authorization: `Bearer ${process.env.ANTHROPIC_TOKEN}`,
   };
-  console.dir({ body, chatCompletionUrl, headers }, { depth: 10 });
+  // console.dir({ body, chatCompletionUrl, headers }, { depth: 10 });
   // Forward the request to the chat completion endpoint
   const response = await fetch(chatCompletionUrl, {
     method: "POST",
@@ -74,7 +74,7 @@ export const POST = async (request: Request) => {
 
           try {
             const parsedChunk = JSON.parse(line.replace(/^data: /, ""));
-            console.log("something", parsedChunk);
+            //   console.log("something", parsedChunk);
             const content = parsedChunk.choices[0]?.delta?.content;
             if (content !== undefined && content !== null) {
               controller.enqueue(encoder.encode(content));

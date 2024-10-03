@@ -54,12 +54,15 @@
         <div class="relative mt-4">
             <textarea id="response" class="bg-white p-4 rounded shadow-md w-full h-64 resize-none" readonly></textarea>
             <div class="absolute top-2 right-2 flex">
-                <button id="copyCodeBtn" class="hidden bg-[#cc7c5e] text-white px-2 py-1 rounded text-sm mr-2">
-                    <i class="fas fa-copy mr-1"></i>Copy Code
-                </button>
+
                 <button id="openHostedBtn" class="hidden bg-[#cc7c5e] text-white px-2 py-1 rounded text-sm">
                     <i class="fas fa-external-link-alt mr-1"></i>Open Hosted
                 </button>
+
+                <button id="copyCodeBtn" class="hidden bg-[#cc7c5e] text-white px-2 py-1 rounded text-sm mr-2">
+                    <i class="fas fa-copy mr-1"></i>Copy Code
+                </button>
+
             </div>
         </div>
 
@@ -231,11 +234,11 @@
             const response = document.getElementById('response');
             const copyCodeBtn = document.getElementById('copyCodeBtn');
 
-            if (extractAllCodeBlocks(response.value)[0].code) {
+            const blocks = extractAllCodeBlocks(response.value)
+            if (blocks[blocks.length - 1].code) {
                 copyCodeBtn.classList.remove('hidden');
 
                 if (!isHosted) {
-                    isHosted = true;
                     hostCode();
                 }
             } else {
@@ -259,24 +262,42 @@
 
         function copyCodeToClipboard() {
             const response = document.getElementById('response');
-            const [{ code }] = extractAllCodeBlocks(response.value);
+            const items = extractAllCodeBlocks(response.value);
 
-            if (code) {
-                navigator.clipboard.writeText(code).then(() => {
-                    alert('Code copied to clipboard!');
-                }).catch(err => {
-                    console.error('Failed to copy code: ', err);
-                });
+            const last = items[items.length - 1];
+            if (!last?.code) {
+                return;
             }
+
+
+            navigator.clipboard.writeText(last.code).then(() => {
+                alert('Code copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy code: ', err);
+            });
+
         }
 
         async function hostCode() {
             const response = document.getElementById('response');
-            const [{ code, language }] = extractAllCodeBlocks(response.value);
+            const blocks = extractAllCodeBlocks(response.value);
+
+
+
+            const maybe = blocks[blocks.length - 1];
+
+            if (!maybe) {
+                return;
+            }
+            const { code, language } = maybe;
+
             const userPrompt = document.getElementById('userPrompt').value;
 
-            if (code) {
+            if (code && language !== "md") {
                 try {
+                    //already set here to prevent doing multiple times
+                    isHosted = true;
+
                     const res = await fetch('https://content.actionschema.com/set', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json', },
@@ -289,9 +310,11 @@
 
                     if (res.ok) {
                         const data = await res.json();
+
                         hostedContentUrl = data.contentUrl;
                         document.getElementById('openHostedBtn').classList.remove('hidden');
                     } else {
+                        isHosted = false;
                         console.error('Failed to host the code');
                     }
                 } catch (error) {
