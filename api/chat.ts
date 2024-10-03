@@ -1,7 +1,7 @@
 import { profiles } from "./profiles";
 
 export const config = {
-  //runtime: "edge",
+  runtime: "edge",
   regions: ["iad1"],
 };
 
@@ -75,13 +75,15 @@ export const POST = async (request: Request) => {
         const lines = buffer.split("\n");
         buffer = lines.pop() || "";
 
+        const encoder = new TextEncoder();
+
         for (const line of lines) {
           if (line.trim() === "") continue;
 
           try {
             // if it can parse and doesn't crash, let's send it in
             JSON.parse(line.replace(/^data: /, ""));
-            controller.enqueue("\n\n" + line);
+            controller.enqueue(encoder.encode("\n\n" + line));
 
             // console.log("something", parsedChunk);
             // const content = parsedChunk.choices[0]?.delta?.content;
