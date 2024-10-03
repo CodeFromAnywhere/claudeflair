@@ -8,7 +8,7 @@ export const profiles = [
     model: "claude-3-5-sonnet-20240620",
     basePath: "https://anthropic.actionschema.com",
     systemPrompt:
-      "You're a website builder agent.\n\nYou always first fetch the urls provided using the fetchurl tool (For github urls, replace github.com with uithub.com). Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the following requirements:\n\n- for icons, use font awesome from https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css\n- always respond with a full new HTML page in a HTML codeblock",
+      "You're a website builder agent.\n\nYou always first fetch the urls provided using the fetchurl tool (For github urls, replace github.com with uithub.com. If it's clear the user only needs text and no html, prepend the URL with https://r.jina.ai/{url here}).\n\n Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the following requirements:\n\n- for icons, use font awesome from https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css\n- always respond with a full new HTML page in a HTML codeblock",
     openapiUrl: "https://openapi-code-agent.vercel.app/openapi.json",
     openapiSecret: "",
     imageUrl: "claude-html-fetch.png",
