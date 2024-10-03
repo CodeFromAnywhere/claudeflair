@@ -50,6 +50,7 @@
                 <button id="submitBtn" class="bg-[#cc7c5e] hover:bg-[#b56e53] text-white font-bold py-2 px-4 rounded">
                     <i id="submitIcon" class="fas fa-paper-plane mr-2"></i>Send
                 </button>
+                <button onclick="fillRandomSuggestion()">Random suggestion</button>
             </div>
         </div>
 
@@ -82,6 +83,14 @@
         let isHosted = false;
         let hostedContentUrl = null;
 
+        function fillRandomSuggestion() {
+            const suggestions = ["hey look at https://claudeflair.com and make me something like that but in matrix theme", "Can you make this but for openai? https://uithub.com/codefromanywhere/claudeflair"]
+
+            const randomSuggestion = suggestions[Math.floor(suggestions.length * Math.random())];
+
+            document.getElementById("userPrompt").value = randomSuggestion
+
+        }
         function setupScrollBehavior() {
             responseTextarea = document.getElementById('response');
             responseTextarea.addEventListener('scroll', handleScroll);
@@ -191,7 +200,7 @@
                 const finalOpenapiUrl = settings.openapiUrl || '';
                 const openapiPrefix = finalOpenapiUrl ? `/${encodeURIComponent(finalOpenapiUrl)}` : "";
 
-                const res = await fetch(`/api/simple?profile=${selectedProfile}`, {
+                const res = await fetch(`/api/chat?profile=${selectedProfile}`, {
                     method: 'POST',
                     body: JSON.stringify({ message: userPrompt })
                 });
@@ -203,20 +212,43 @@
 
                 const reader = res.body.getReader();
                 const decoder = new TextDecoder();
-
+                let buffer = "";
 
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
 
-                    const chunk = decoder.decode(value);
 
-                    response.value += chunk;
 
-                    if (!userHasScrolled) {
-                        response.scrollTop = response.scrollHeight;
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split("\n");
+                    buffer = lines.pop() || "";
+
+                    for (const line of lines) {
+                        if (line.trim() === "") continue;
+
+                        try {
+                            // if it can parse and doesn't crash, let's send it in
+                            const parsedChunk = JSON.parse(line.replace(/^data: /, ""));
+
+                            const content = parsedChunk.choices[0]?.delta?.content;
+                            console.log("something", content, parsedChunk);
+                            if (content !== undefined && content !== null) {
+
+                                response.value += content;
+
+                                if (!userHasScrolled) {
+                                    response.scrollTop = response.scrollHeight;
+                                }
+                                checkForCodeBlocks();
+
+                            }
+                        } catch (error) {
+                            console.error("Error parsing chunk:", error);
+                        }
                     }
-                    checkForCodeBlocks();
+
+
 
                 }
 

@@ -35,4 +35,6 @@ This project is made possible by:
 
 1. It has a bug where it sometimes stops generating in the middle (likely due to nature of my streaming implementation or maybe due to output token length). Solution: add error handling and ensure to put as much as possible as system message, also after tools come back.
 
-2. I'll go bankrupt if I keep it free 🤑 solution: after 10 messages on your IP, link to stripe to submit payment details for automatic monthly payment of 1.25x of claude inference cost. If users don't want to pay, allow them to provide their own API key to bypass the ratelimit and only pay Claude directly.
+- look at stop tokens and ensure they are returned in api and see if that is the cause
+
+1. I'll go bankrupt if I keep it free 🤑 solution: after 10 messages on your IP, link to stripe to submit payment details for automatic monthly payment of 1.25x of claude inference cost. If users don't want to pay, allow them to provide their own API key to bypass the ratelimit and only pay Claude directly.

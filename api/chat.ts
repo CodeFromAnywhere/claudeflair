@@ -73,12 +73,15 @@ export const POST = async (request: Request) => {
           if (line.trim() === "") continue;
 
           try {
-            const parsedChunk = JSON.parse(line.replace(/^data: /, ""));
-            //   console.log("something", parsedChunk);
-            const content = parsedChunk.choices[0]?.delta?.content;
-            if (content !== undefined && content !== null) {
-              controller.enqueue(encoder.encode(content));
-            }
+            // if it can parse and doesn't crash, let's send it in
+            JSON.parse(line.replace(/^data: /, ""));
+            controller.enqueue("\n\n" + line);
+
+            // console.log("something", parsedChunk);
+            // const content = parsedChunk.choices[0]?.delta?.content;
+            // if (content !== undefined && content !== null) {
+            //   controller.enqueue(encoder.encode(content));
+            // }
           } catch (error) {
             console.error("Error parsing chunk:", error);
           }
@@ -90,8 +93,9 @@ export const POST = async (request: Request) => {
 
   return new Response(stream, {
     headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Transfer-Encoding": "chunked",
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
     },
   });
 };
