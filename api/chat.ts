@@ -1,6 +1,9 @@
 import { profiles } from "./profiles";
 
-export const config = { runtime: "edge", regions: ["iad1"] };
+export const config = {
+  //runtime: "edge",
+  regions: ["iad1"],
+};
 
 export const POST = async (request: Request) => {
   console.log("HEY POST SIMPLE");
@@ -12,9 +15,10 @@ export const POST = async (request: Request) => {
     return new Response("Provide a message", { status: 422 });
   }
 
-  const { model, systemPrompt, openapiUrl, basePath, openapiSecret } =
-    profiles.filter((x) => x.id === profile)[0];
+  const { model, systemPrompt, openapiUrl, basePath, openapiSecret, id } =
+    profiles.filter((x) => x.id === profile)[0] || profiles[0];
 
+  console.log({ model, id });
   const openapiPart = openapiUrl?.length
     ? "/" + encodeURIComponent(openapiUrl)
     : "";
@@ -35,7 +39,7 @@ export const POST = async (request: Request) => {
     "X-OPENAPI-SECRET": openapiSecret,
     Authorization: `Bearer ${process.env.ANTHROPIC_TOKEN}`,
   };
-  // console.dir({ body, chatCompletionUrl, headers }, { depth: 10 });
+  console.dir({ chatCompletionUrl, headers, body }, { depth: 10 });
   // Forward the request to the chat completion endpoint
   const response = await fetch(chatCompletionUrl, {
     method: "POST",
