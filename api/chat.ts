@@ -19,6 +19,8 @@ export const POST = async (request: Request) => {
   console.log("HEY POST SIMPLE");
   const url = new URL(request.url);
   const profile = url.searchParams.get("profile");
+  const apiKey = request.headers.get("Authorization")?.slice("Bearer ".length);
+
   const { message, password } = await request.json();
 
   if (!message) {
@@ -47,7 +49,7 @@ export const POST = async (request: Request) => {
     "Content-Type": "application/json",
     "X-BASEPATH": basePath,
     "X-OPENAPI-SECRET": openapiSecret,
-    Authorization: `Bearer ${process.env.ANTHROPIC_TOKEN}`,
+    Authorization: `Bearer ${apiKey || process.env.ANTHROPIC_TOKEN}`,
   };
 
   console.dir({ chatCompletionUrl, headers, body }, { depth: 10 });
@@ -56,8 +58,6 @@ export const POST = async (request: Request) => {
   console.log("START STREAM");
   const stream = new ReadableStream({
     async start(controller) {
-      let buffer = "";
-
       if (password !== process.env.PASSWORD) {
         const prefix =
           "Because you didn't pay for the password yet, I will start after this sentence. To make this faster, donate and get a password... \n\n\n";
@@ -126,32 +126,6 @@ export const POST = async (request: Request) => {
 
         // simpler
         controller.enqueue(value);
-
-        // buffer += new TextDecoder().decode(value, { stream: true });
-        // const lines = buffer.split("\n");
-        // buffer = lines.pop() || "";
-
-        // for (const line of lines) {
-        //   if (line.trim() === "") continue;
-
-        //   try {
-        //     // if it can parse and doesn't crash, let's send it in
-        //     JSON.parse(line.replace(/^data: /, ""));
-
-        //     const encodable = "\n\n" + line;
-        //     console.log("encodable:", encodable);
-        //     controller.enqueue(new TextEncoder().encode(encodable));
-
-        //     // console.log("something", parsedChunk);
-        //     // const content = parsedChunk.choices[0]?.delta?.content;
-        //     // if (content !== undefined && content !== null) {
-        //     //   controller.enqueue(encoder.encode(content));
-        //     // }
-        //   } catch (error) {
-        //     console.error("Error parsing chunk:", error);
-        //     controller.error(error);
-        //   }
-        // }
       }
       controller.close();
     },

@@ -224,11 +224,18 @@
                 const openapiPrefix = finalOpenapiUrl ? `/${encodeURIComponent(finalOpenapiUrl)}` : "";
 
                 const password = localStorage.getItem('password') || '';
+
+                const headers = {
+                    'Content-Type': 'application/json',
+                }
+
+                const key = localStorage.getItem("anthropicApiKey");
+                if (key) {
+                    headers.Authorization = "Bearer " + key
+                }
                 const res = await fetch(`/api/chat?profile=${selectedProfile}`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers,
                     body: JSON.stringify({ message: userPrompt, password: password })
                 });
 
