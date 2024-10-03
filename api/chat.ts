@@ -73,6 +73,11 @@ export const POST = async (request: Request) => {
   }
 
   const reader = response.body?.getReader();
+
+  if (!reader) {
+    return new Response("No reader", { status: 500 });
+  }
+
   const encoder = new TextEncoder();
 
   console.log("START STREAM");
@@ -84,31 +89,33 @@ export const POST = async (request: Request) => {
         const { done, value } = await reader!.read();
         if (done) break;
 
-        buffer += new TextDecoder().decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
+        controller.enqueue(value);
 
-        for (const line of lines) {
-          if (line.trim() === "") continue;
+        // buffer += new TextDecoder().decode(value, { stream: true });
+        // const lines = buffer.split("\n");
+        // buffer = lines.pop() || "";
 
-          try {
-            // if it can parse and doesn't crash, let's send it in
-            JSON.parse(line.replace(/^data: /, ""));
+        // for (const line of lines) {
+        //   if (line.trim() === "") continue;
 
-            const encodable = "\n\n" + line;
-            console.log("encodable:", encodable);
-            controller.enqueue(encoder.encode(encodable));
+        //   try {
+        //     // if it can parse and doesn't crash, let's send it in
+        //     JSON.parse(line.replace(/^data: /, ""));
 
-            // console.log("something", parsedChunk);
-            // const content = parsedChunk.choices[0]?.delta?.content;
-            // if (content !== undefined && content !== null) {
-            //   controller.enqueue(encoder.encode(content));
-            // }
-          } catch (error) {
-            console.error("Error parsing chunk:", error);
-            controller.error(error);
-          }
-        }
+        //     const encodable = "\n\n" + line;
+        //     console.log("encodable:", encodable);
+        //     controller.enqueue(new TextEncoder().encode(encodable));
+
+        //     // console.log("something", parsedChunk);
+        //     // const content = parsedChunk.choices[0]?.delta?.content;
+        //     // if (content !== undefined && content !== null) {
+        //     //   controller.enqueue(encoder.encode(content));
+        //     // }
+        //   } catch (error) {
+        //     console.error("Error parsing chunk:", error);
+        //     controller.error(error);
+        //   }
+        // }
       }
       controller.close();
     },
