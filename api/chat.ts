@@ -62,6 +62,7 @@ export const POST = async (request: Request) => {
 
   const reader = response.body?.getReader();
   const encoder = new TextEncoder();
+
   console.log("START STREAM");
   const stream = new ReadableStream({
     async start(controller) {
@@ -74,8 +75,6 @@ export const POST = async (request: Request) => {
         buffer += new TextDecoder().decode(value, { stream: true });
         const lines = buffer.split("\n");
         buffer = lines.pop() || "";
-
-        const encoder = new TextEncoder();
 
         for (const line of lines) {
           if (line.trim() === "") continue;
@@ -92,6 +91,7 @@ export const POST = async (request: Request) => {
             // }
           } catch (error) {
             console.error("Error parsing chunk:", error);
+            controller.error(error);
           }
         }
       }
