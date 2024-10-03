@@ -51,7 +51,14 @@
                     <i id="submitIcon" class="fas fa-paper-plane mr-2"></i>Send
                 </button>
                 <button onclick="fillRandomSuggestion()">Random suggestion</button>
+                <button id="setPasswordBtn"
+                    class="bg-[#cc7c5e] hover:bg-[#b56e53] text-white font-bold py-2 px-4 rounded">
+                    <i class="fas fa-key mr-2"></i>Set Password
+                </button>
             </div>
+            <p class="mt-2 text-sm text-gray-600">No password yet? <a
+                    href="https://donate.stripe.com/dR67vg95Zcmp2aedhD" class="text-blue-500 underline">Buy one here</a>
+            </p>
         </div>
 
         <div class="relative mt-4">
@@ -183,7 +190,8 @@
             userHasScrolled = false;
             isLoading = true;
             isHosted = false;
-            const firstProfile = JSON.parse(localStorage.getItem('chatProfiles'))[0]
+            const firstProfile = localStorage.getItem('chatProfiles') ? JSON.parse(localStorage.getItem('chatProfiles'))?.[0] : undefined;
+
             document.getElementById('submitIcon').className = "fas fa-circle-notch fa-spin mr-2";
             const selectedProfile = localStorage.getItem('selectedProfile') || firstProfile.id;
             console.log(selectedProfile)
@@ -200,9 +208,13 @@
                 const finalOpenapiUrl = settings.openapiUrl || '';
                 const openapiPrefix = finalOpenapiUrl ? `/${encodeURIComponent(finalOpenapiUrl)}` : "";
 
+                const password = localStorage.getItem('password') || '';
                 const res = await fetch(`/api/chat?profile=${selectedProfile}`, {
                     method: 'POST',
-                    body: JSON.stringify({ message: userPrompt })
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userPrompt, password: password })
                 });
 
                 if (res.status === 429) {
@@ -217,8 +229,6 @@
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) break;
-
-
 
                     buffer += decoder.decode(value, { stream: true });
                     const lines = buffer.split("\n");
@@ -247,11 +257,7 @@
                             console.error("Error parsing chunk:", error);
                         }
                     }
-
-
-
                 }
-
 
                 document.getElementById('submitIcon').className = "fas fa-paper-plane mr-2";
                 isLoading = false;
@@ -303,7 +309,6 @@
                 return;
             }
 
-
             navigator.clipboard.writeText(last.code).then(() => {
                 alert('Code copied to clipboard!');
             }).catch(err => {
@@ -315,8 +320,6 @@
         async function hostCode() {
             const response = document.getElementById('response');
             const blocks = extractAllCodeBlocks(response.value);
-
-
 
             const maybe = blocks[blocks.length - 1];
 
@@ -378,7 +381,13 @@
             window.sessionStorage.setItem("userPrompt", evt.target.value);
         };
 
-
+        document.getElementById('setPasswordBtn').addEventListener('click', () => {
+            const password = window.prompt("Please enter your password:");
+            if (password) {
+                localStorage.setItem('password', password);
+                alert('Password set successfully!');
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', setupScrollBehavior);
     </script>

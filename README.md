@@ -29,12 +29,17 @@ This project is made possible by:
 - https://chat.actionschema.com
 - https://anthropic.actionschema.com
 
-# TODO / Changelog:
+# Changelog:
 
-#buildinpublic thread: https://x.com/WKarsens/status/1841753924593668447
+- 2024-10-03: https://x.com/WKarsens/status/1841753924593668447
 
-1. It has a bug where it sometimes stops generating in the middle (likely due to nature of my streaming implementation or maybe due to output token length). Solution: add error handling and ensure to put as much as possible as system message, also after tools come back.
+# Todo:
 
-- look at stop tokens and ensure they are returned in api and see if that is the cause
+- I'll go bankrupt if I keep it free 🤑 Let's find something creative to make people pay
 
-1. I'll go bankrupt if I keep it free 🤑 solution: after 10 messages on your IP, link to stripe to submit payment details for automatic monthly payment of 1.25x of claude inference cost. If users don't want to pay, allow them to provide their own API key to bypass the ratelimit and only pay Claude directly.
+  - Require API key after 5 messages per IP per day
+  - Allow sending a password to `/message` and if not sent, add prefix "I WILL START IN 5 SECONDS BECAUSE YOU DIDN'T PAY YET" that takes 5 seconds.
+  - Also allow entering password in the chat page
+  - Stripe link to get password at thankyou page (Cost: €20 one time)
+
+- **long generations** For long website generations, it doesn't complete the full HTML File. It would be great if this could be somehow automatically detected and solved
