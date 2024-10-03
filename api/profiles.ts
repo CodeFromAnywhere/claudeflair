@@ -13,6 +13,16 @@ export const profiles = [
     personaDescription: "Claude with instant URL Fetching and web deployment",
   },
 ];
+export const OPTIONS = async (request: Request) => {
+  // Set CORS headers
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+  // Handle OPTIONS request (preflight)
+  return new Response(null, { headers });
+};
 
 export const GET = () => {
   return new Response(

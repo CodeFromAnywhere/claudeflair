@@ -1,5 +1,15 @@
 import { profiles } from "./profiles";
 
+export const OPTIONS = async (request: Request) => {
+  // Set CORS headers
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+  // Handle OPTIONS request (preflight)
+  return new Response(null, { headers });
+};
 export const config = {
   runtime: "edge",
   regions: ["iad1"],
@@ -82,7 +92,10 @@ export const POST = async (request: Request) => {
           try {
             // if it can parse and doesn't crash, let's send it in
             JSON.parse(line.replace(/^data: /, ""));
-            controller.enqueue(encoder.encode("\n\n" + line));
+
+            const encodable = "\n\n" + line;
+            console.log("encodable:", encodable);
+            controller.enqueue(encoder.encode(encodable));
 
             // console.log("something", parsedChunk);
             // const content = parsedChunk.choices[0]?.delta?.content;
