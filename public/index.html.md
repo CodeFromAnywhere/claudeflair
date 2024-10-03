@@ -1,0 +1,1 @@
+See README.md and please make me a modern stylish landingpage for claudeflair. Please use #cc7c5e and #f9faf6 as primary and background . please be minimalistic with a big strong header. please use some font that looks slightly artistic and handwritten just like anthropic.
