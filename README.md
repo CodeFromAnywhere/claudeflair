@@ -35,11 +35,5 @@ This project is made possible by:
 
 # Todo:
 
-- I'll go bankrupt if I keep it free 🤑 Let's find something creative to make people pay
-
-  - Require API key after 5 messages per IP per day
-  - Allow sending a password to `/message` and if not sent, add prefix "I WILL START IN 5 SECONDS BECAUSE YOU DIDN'T PAY YET" that takes 5 seconds.
-  - Also allow entering password in the chat page
-  - Stripe link to get password at thankyou page (Cost: €20 one time)
-
-- **long generations** For long website generations, it doesn't complete the full HTML File. It would be great if this could be somehow automatically detected and solved
+- **long generations**: For long website generations, it doesn't complete the full HTML File. It would be great if this could be somehow automatically detected and solved.
+- **show error message**: if there is some problem, ensure to show an error message for it
