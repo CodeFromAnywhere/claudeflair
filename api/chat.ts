@@ -1,5 +1,7 @@
 import { profiles } from "./profiles";
 
+export const config = { runtime: "edge", regions: ["iad1"] };
+
 export const POST = async (request: Request) => {
   console.log("HEY POST SIMPLE");
   const url = new URL(request.url);

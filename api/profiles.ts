@@ -1,3 +1,4 @@
+export const config = { runtime: "edge", regions: ["iad1"] };
 export const profiles = [
   {
     id: "claude-html-fetch",
