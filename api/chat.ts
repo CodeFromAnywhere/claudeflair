@@ -64,7 +64,9 @@ export const POST = async (request: Request) => {
       response.statusText,
       await response.text(),
     );
-    return new Response(await response.text(), {
+    const errorMessage =
+      "Error fetching chat: " + response.status + " " + (await response.text());
+    return new Response(errorMessage, {
       status: response.status,
       statusText: response.statusText,
     });
