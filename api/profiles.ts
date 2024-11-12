@@ -29,7 +29,6 @@ export const OPTIONS = async (request: Request) => {
     "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
-// Endpoint GET para retornar a lista de perfis disponíveis
   // Handle OPTIONS request (preflight)
   return new Response(null, { headers });
 };

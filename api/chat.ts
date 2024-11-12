@@ -12,7 +12,6 @@ export const OPTIONS = async (request: Request) => {
 };
 export const config = {
   //runtime: "edge",
-// Manipula requisições POST para o endpoint de chat
 // Processa a mensagem do usuário e retorna a resposta do Claude
   regions: ["iad1"],
 };
