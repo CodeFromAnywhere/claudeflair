@@ -1,39 +1,39 @@
-# Claude Flair - Claude with instant URL Fetching and web deployment
+# Claude Flair - Claude met directe URL-ophaling en webimplementatie
 
-[Claude of Anthropic](https://anthropic.com) is currently one of the best LLM's out there. Some weeks ago [Alex Albert](https://x.com/alexalbert__) requested feedback about Claude and something that stood out to me was to add "url fetching" to Claude (something [Bruna Baudel](https://x.com/brunabaudel) suggested). At that time I already made [ActionSchema Chat](https://chat.actionschema.com) and I quickly added URL Fetching as a tool to Claude. It worked fantastic! But I forgot to share it with the world.
+[Claude van Anthropic](https://anthropic.com) is momenteel een van de beste LLM's die er zijn. Enkele weken geleden vroeg [Alex Albert](https://x.com/alexalbert__) om feedback over Claude en iets wat opviel was om "url-ophaling" toe te voegen aan Claude (iets wat [Bruna Baudel](https://x.com/brunabaudel) suggereerde). Op dat moment had ik al [ActionSchema Chat](https://chat.actionschema.com) gemaakt en ik voegde snel URL-ophaling toe als tool voor Claude. Het werkte fantastisch! Maar ik vergat het met de wereld te delen.
 
-Claude Flair is a website and hashtag #claudeflair dedicated to sharing the best tool-use use-cases and I'll start by sharing my most useful tool-enabled agent I've made so far:
+Claude Flair is een website en hashtag #claudeflair gewijd aan het delen van de beste tool-gebruik use-cases en ik zal beginnen met het delen van mijn meest nuttige tool-enabled agent die ik tot nu toe heb gemaakt:
 
-> Claude with instant URL Fetching and Web Deployment
+> Claude met directe URL-ophaling en Webimplementatie
 
-This agent has a simple system prompt:
-
-```
-
-You're a website builder agent.
-
-You always first fetch the urls provided using the fetchurl tool. Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the following requirements:
-
-- for icons, use font awesome from https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css
-- always respond with a full new HTML page in a HTML codeblock
+Deze agent heeft een eenvoudige systeemprompt:
 
 ```
 
-And most importantly it can use 2 tools:
+Je bent een website bouwer agent.
 
-- To fetch URLs: https://openapi-code-agent.vercel.app/openapi.json
-- To deploy generated HTML instantly: https://content.actionschema.com/openapi.json
+Je haalt altijd eerst de URL's op met behulp van de fetchurl tool. Daarna maak je een vanilla HTML + TailwindCDN + CSS + JS website met de volgende vereisten:
 
-This project is made possible by:
+- voor iconen, gebruik font awesome van https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css
+- reageer altijd met een volledige nieuwe HTML-pagina in een HTML-codeblok
+
+```
+
+En het belangrijkste is dat het 2 tools kan gebruiken:
+
+- Om URL's op te halen: https://openapi-code-agent.vercel.app/openapi.json
+- Om gegenereerde HTML direct te implementeren: https://content.actionschema.com/openapi.json
+
+Dit project is mogelijk gemaakt door:
 
 - https://chat.actionschema.com
 - https://anthropic.actionschema.com
 
-# Changelog:
+# Wijzigingslog:
 
 - 2024-10-03: https://x.com/WKarsens/status/1841753924593668447
 
-# Todo:
+# Te doen:
 
-- **long generations**: For long website generations, it doesn't complete the full HTML File. It would be great if this could be somehow automatically detected and solved.
-- **show error message**: if there is some problem, ensure to show an error message for it
+- **lange generaties**: Voor lange website-generaties maakt het het volledige HTML-bestand niet af. Het zou geweldig zijn als dit op de een of andere manier automatisch gedetecteerd en opgelost zou kunnen worden.
+- **toon foutmelding**: als er een probleem is, zorg ervoor dat er een foutmelding voor wordt weergegeven
