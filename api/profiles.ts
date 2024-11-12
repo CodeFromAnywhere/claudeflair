@@ -1,6 +1,13 @@
+/**
+ * Konfigurationsmodul für Chat-Profile
+ * Definiert verfügbare Chat-Profile und deren Einstellungen
+ */
+
 export const config = {
   // runtime: "edge",
   regions: ["iad1"],
+// Liste der verfügbaren Chat-Profile
+
 };
 export const profiles = [
   {
@@ -20,6 +27,8 @@ Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the follow
     imageUrl: "claude-html-fetch.png",
     personaName: "Claude with URL Fetching and Web Deployment",
     personaDescription: "Claude with instant URL Fetching and web deployment",
+// CORS-Optionen Endpunkt
+
   },
 ];
 export const OPTIONS = async (request: Request) => {
@@ -30,6 +39,11 @@ export const OPTIONS = async (request: Request) => {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
   // Handle OPTIONS request (preflight)
+/** 
+ * API-Endpunkt zum Abrufen der verfügbaren Profile
+ * Gibt eine vereinfachte Version der Profile zurück
+ */
+
   return new Response(null, { headers });
 };
 
