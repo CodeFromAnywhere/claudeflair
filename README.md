@@ -1,39 +1,59 @@
-# Claude Flair - Claude with instant URL Fetching and web deployment
+# 🎨 Claude Flair
 
-[Claude of Anthropic](https://anthropic.com) is currently one of the best LLM's out there. Some weeks ago [Alex Albert](https://x.com/alexalbert__) requested feedback about Claude and something that stood out to me was to add "url fetching" to Claude (something [Bruna Baudel](https://x.com/brunabaudel) suggested). At that time I already made [ActionSchema Chat](https://chat.actionschema.com) and I quickly added URL Fetching as a tool to Claude. It worked fantastic! But I forgot to share it with the world.
+> 🚀 Give Claude superpowers with instant URL fetching and web deployment
 
-Claude Flair is a website and hashtag #claudeflair dedicated to sharing the best tool-use use-cases and I'll start by sharing my most useful tool-enabled agent I've made so far:
+## ✨ Features
 
-> Claude with instant URL Fetching and Web Deployment
+- 🌐 **Instant URL Fetching**: Claude can analyze any website or GitHub repo in real-time
+- 🎯 **Instant Deployment**: Generate and host websites with one click
+- 🤖 **Smart HTML Generation**: Creates modern, responsive websites using Tailwind CSS
 
-This agent has a simple system prompt:
+## 🛠️ Tools Used
+
+Claude Flair combines two powerful tools:
+
+1. 🔍 **URL Fetching**: [openapi-code-agent.vercel.app/openapi.json](https://openapi-code-agent.vercel.app/openapi.json)
+2. 🚀 **Web Deployment**: [content.actionschema.com/openapi.json](https://content.actionschema.com/openapi.json)
+
+## 💡 How It Works
+
+The agent uses a simple but effective system prompt:
 
 ```
-
 You're a website builder agent.
 
-You always first fetch the urls provided using the fetchurl tool. Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the following requirements:
+If needed for context, fetch the url using the fetchurl tool. For github urls, replace github.com with uithub.com.
+
+Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the following requirements:
 
 - for icons, use font awesome from https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css
 - always respond with a full new HTML page in a HTML codeblock
-
 ```
 
-And most importantly it can use 2 tools:
+## 🌟 Try It Out
 
-- To fetch URLs: https://openapi-code-agent.vercel.app/openapi.json
-- To deploy generated HTML instantly: https://content.actionschema.com/openapi.json
+Visit [claudeflair.com](https://claudeflair.com) to experience it yourself!
 
-This project is made possible by:
+## 🙏 Credits
 
-- https://chat.actionschema.com
-- https://anthropic.actionschema.com
+This project is powered by:
 
-# Changelog:
+- 🎯 [chat.actionschema.com](https://chat.actionschema.com)
+- 🤖 [anthropic.actionschema.com](https://anthropic.actionschema.com)
 
-- 2024-10-03: https://x.com/WKarsens/status/1841753924593668447
+## 📝 Changelog
 
-# Todo:
+- 🚀 2024-10-03: [Initial Release Tweet](https://x.com/WKarsens/status/1841753924593668447)
 
-- **long generations**: For long website generations, it doesn't complete the full HTML File. It would be great if this could be somehow automatically detected and solved.
-- **show error message**: if there is some problem, ensure to show an error message for it
+## 🔄 Known Issues
+
+1. **Long Generations**: Sometimes the HTML generation gets cut off for complex websites. Working on a fix!
+2. **Error Handling**: Need to implement better error messages when things go wrong.
+
+## 🤝 Contributing
+
+Feel free to open issues and PRs! Let's make Claude Flair even better together.
+
+## 📫 Contact
+
+Reach out on Twitter [@WKarsens](https://twitter.com/WKarsens) for questions or feedback!
