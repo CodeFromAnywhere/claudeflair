@@ -1,6 +1,4 @@
-// Este arquivo contém a lógica principal para o endpoint de chat
 import { profiles } from "./profiles";
-// Configura os cabeçalhos CORS para permitir requisições cross-origin
 
 export const OPTIONS = async (request: Request) => {
   // Set CORS headers
@@ -10,7 +8,6 @@ export const OPTIONS = async (request: Request) => {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
   // Handle OPTIONS request (preflight)
-// Configuração do tempo de execução e região do servidor
   return new Response(null, { headers });
 };
 export const config = {
@@ -27,7 +24,6 @@ export const POST = async (request: Request) => {
   const apiKey = request.headers.get("Authorization")?.slice("Bearer ".length);
 
   const { message, password } = await request.json();
-// Obtém as configurações do perfil selecionado ou usa o perfil padrão
 
   if (!message) {
     return new Response("Provide a message", { status: 422 });
@@ -36,7 +32,6 @@ export const POST = async (request: Request) => {
   const { model, systemPrompt, openapiUrl, basePath, openapiSecret, id } =
     profiles.filter((x) => x.id === profile)[0] || profiles[0];
 
-// Prepara o corpo da requisição com as mensagens do sistema e do usuário
   console.log({ model, id });
   const openapiPart = openapiUrl?.length
     ? "/" + encodeURIComponent(openapiUrl)
@@ -45,7 +40,6 @@ export const POST = async (request: Request) => {
 
   const body = {
     messages: [
-// Configura os cabeçalhos da requisição incluindo autenticação
       { role: "system", content: systemPrompt },
       { role: "user", content: message },
     ],
@@ -55,10 +49,8 @@ export const POST = async (request: Request) => {
   };
   const headers = {
     "Content-Type": "application/json",
-// Cria um stream de resposta para enviar dados em tempo real
     "X-BASEPATH": basePath,
     "X-OPENAPI-SECRET": openapiSecret,
-// Verifica se o usuário tem a senha correta, caso contrário adiciona um atraso
     Authorization: `Bearer ${apiKey || process.env.ANTHROPIC_TOKEN}`,
   };
 
@@ -90,7 +82,6 @@ export const POST = async (request: Request) => {
                       finish_reason: null,
                     },
                   ],
-// Faz a requisição para o serviço do Claude
                 }),
             ),
           );
@@ -114,13 +105,11 @@ export const POST = async (request: Request) => {
           response.statusText,
           await response.text(),
         );
-// Configura o leitor do stream de resposta
         const errorMessage =
           "Error fetching chat: " +
           response.status +
           " " +
           (await response.text());
-// Loop principal para ler e processar a resposta em chunks
         return new Response(errorMessage, {
           status: response.status,
           statusText: response.statusText,

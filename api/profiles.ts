@@ -1,10 +1,7 @@
-// Este arquivo contém as configurações dos diferentes perfis do sistema
 export const config = {
   // runtime: "edge",
   regions: ["iad1"],
-// Array de perfis disponíveis com suas configurações específicas
 };
-// Perfil padrão para o Claude com capacidade de buscar URLs
 export const profiles = [
   {
     id: "claude-html-fetch",
@@ -22,7 +19,6 @@ Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the follow
     openapiSecret: "",
     imageUrl: "claude-html-fetch.png",
     personaName: "Claude with URL Fetching and Web Deployment",
-// Configura os cabeçalhos CORS para permitir requisições cross-origin
     personaDescription: "Claude with instant URL Fetching and web deployment",
   },
 ];
