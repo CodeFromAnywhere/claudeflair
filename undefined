@@ -1,0 +1,56 @@
+// Configuração da função serverless
+export const config = {
+  // runtime: "edge",
+  regions: ["iad1"],
+};
+
+// Define os perfis disponíveis na aplicação
+export const profiles = [
+  {
+    id: "claude-html-fetch",
+    model: "claude-3-5-sonnet-20240620",
+    basePath: "https://anthropic.actionschema.com",
+    // Sistema prompt que define o comportamento do agente
+    systemPrompt: `You're a website builder agent.
+      
+If needed for context, fetch the url using the fetchurl tool. For github urls, replace github.com with uithub.com.
+
+Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the following requirements:
+
+- for icons, use font awesome from https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css
+- always respond with a full new HTML page in a HTML codeblock`,
+    openapiUrl: "https://openapi-code-agent.vercel.app/openapi.json",
+    openapiSecret: "",
+    imageUrl: "claude-html-fetch.png",
+    personaName: "Claude with URL Fetching and Web Deployment",
+    personaDescription: "Claude with instant URL Fetching and web deployment",
+  },
+];
+
+// Configuração para requisições OPTIONS (CORS)
+export const OPTIONS = async (request: Request) => {
+  // Define os cabeçalhos CORS
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+  // Trata a requisição OPTIONS (preflight)
+  return new Response(null, { headers });
+};
+
+// Manipula requisições GET para listar os perfis
+export const GET = () => {
+  // Retorna uma lista simplificada dos perfis
+  return new Response(
+    JSON.stringify(
+      profiles.map(({ id, personaDescription, personaName, imageUrl }) => ({
+        id,
+        personaDescription,
+        personaName,
+        imageUrl,
+      })),
+    ),
+    { status: 200, headers: { "Content-Type": "application/json" } },
+  );
+};
