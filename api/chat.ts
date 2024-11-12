@@ -1,4 +1,7 @@
+// Dit bestand bevat de chat API functionaliteit
+// Het ondersteunt het streamen van chat antwoorden van Claude via server-sent events
 import { profiles } from "./profiles";
+// Afhandelen van CORS preflight requests
 
 export const OPTIONS = async (request: Request) => {
   // Set CORS headers
@@ -8,27 +11,33 @@ export const OPTIONS = async (request: Request) => {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
   // Handle OPTIONS request (preflight)
+// Server configuratie
   return new Response(null, { headers });
 };
 export const config = {
   //runtime: "edge",
+// Hoofdfunctie voor het verwerken van chat berichten
   regions: ["iad1"],
 };
 
 export const POST = async (request: Request) => {
+// Haal bericht en wachtwoord uit request body
   console.log("HEY POST SIMPLE");
   const url = new URL(request.url);
   const profile = url.searchParams.get("profile");
   const apiKey = request.headers.get("Authorization")?.slice("Bearer ".length);
 
   const { message, password } = await request.json();
+// Haal profiel instellingen op voor het gekozen model
 
   if (!message) {
     return new Response("Provide a message", { status: 422 });
+// Bouw de OpenAPI URL op met eventuele parameters
   }
 
   const { model, systemPrompt, openapiUrl, basePath, openapiSecret, id } =
     profiles.filter((x) => x.id === profile)[0] || profiles[0];
+// Bereid het chat request voor
 
   console.log({ model, id });
   const openapiPart = openapiUrl?.length
@@ -37,6 +46,7 @@ export const POST = async (request: Request) => {
   const chatCompletionUrl = `https://chat.actionschema.com${openapiPart}/chat/completions`;
 
   const body = {
+// Stel de headers in met authenticatie
     messages: [
       { role: "system", content: systemPrompt },
       { role: "user", content: message },
@@ -47,7 +57,9 @@ export const POST = async (request: Request) => {
   };
   const headers = {
     "Content-Type": "application/json",
+// Maak een stream voor het antwoord
     "X-BASEPATH": basePath,
+// Controleer wachtwoord en voeg vertraging toe indien nodig
     "X-OPENAPI-SECRET": openapiSecret,
     Authorization: `Bearer ${apiKey || process.env.ANTHROPIC_TOKEN}`,
   };
@@ -79,6 +91,7 @@ export const POST = async (request: Request) => {
                       delta: { role: "assistant", content: " " + word },
                       finish_reason: null,
                     },
+// Stuur het chat request naar de API
                   ],
                 }),
             ),
@@ -102,11 +115,13 @@ export const POST = async (request: Request) => {
           response.status,
           response.statusText,
           await response.text(),
+// Lees de response stream uit
         );
         const errorMessage =
           "Error fetching chat: " +
           response.status +
           " " +
+// Loop door de stream chunks
           (await response.text());
         return new Response(errorMessage, {
           status: response.status,
@@ -117,6 +132,7 @@ export const POST = async (request: Request) => {
       const reader = response.body?.getReader();
 
       if (!reader) {
+// Stuur response met streaming headers
         return new Response("No reader", { status: 500 });
       }
 

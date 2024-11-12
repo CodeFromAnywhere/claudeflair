@@ -1,6 +1,8 @@
+// Configuratie voor server deployment
 export const config = {
   // runtime: "edge",
   regions: ["iad1"],
+// Beschikbare chat profielen met hun instellingen
 };
 export const profiles = [
   {
@@ -20,6 +22,7 @@ Afterwards, make a vanilla HTML + TailwindCDN + CSS + JS website with the follow
     imageUrl: "claude-html-fetch.png",
     personaName: "Claude with URL Fetching and Web Deployment",
     personaDescription: "Claude with instant URL Fetching and web deployment",
+// CORS preflight request handler
   },
 ];
 export const OPTIONS = async (request: Request) => {
@@ -30,6 +33,7 @@ export const OPTIONS = async (request: Request) => {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
   // Handle OPTIONS request (preflight)
+// API endpoint om profielen op te halen
   return new Response(null, { headers });
 };
 
